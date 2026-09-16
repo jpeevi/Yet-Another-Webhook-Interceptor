@@ -1,28 +1,371 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Webhook Viewer</title>
-<style>
-:root{color-scheme:dark;--bg:#0b0d10;--panel:#11151a;--panel2:#171c22;--border:#252c35;--text:#edf2f7;--muted:#8e99a8;--accent:#7dd3fc;--danger:#fb7185;--good:#4ade80}*{box-sizing:border-box}body{margin:0;height:100vh;background:var(--bg);color:var(--text);font-family:Inter,system-ui,sans-serif}button{border:1px solid var(--border);background:var(--panel2);color:var(--text);border-radius:9px;padding:9px 12px;cursor:pointer}.app{height:100vh;display:grid;grid-template-rows:auto 1fr}header{display:flex;gap:16px;align-items:center;padding:16px 20px;border-bottom:1px solid var(--border)}.brand{font-weight:700;display:flex;gap:10px;align-items:center}.dot{width:9px;height:9px;border-radius:50%;background:var(--good)}.urlbar{flex:1;display:flex;border:1px solid var(--border);border-radius:10px;overflow:hidden;background:var(--panel)}.urlbar code{flex:1;padding:10px 12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.urlbar button{border:0;border-left:1px solid var(--border);border-radius:0}.actions{display:flex;gap:8px}.danger{color:#fecdd3}main{display:grid;grid-template-columns:330px 1fr;min-height:0}aside{background:var(--panel);border-right:1px solid var(--border);display:grid;grid-template-rows:auto 1fr;min-width:0}.heading{padding:14px 16px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between}.heading span{color:var(--muted);font-size:13px}#list{overflow:auto}.row{width:100%;display:grid;grid-template-columns:70px 1fr;gap:10px;text-align:left;padding:13px 14px;border:0;border-bottom:1px solid var(--border);border-radius:0;background:transparent}.row:hover,.row.active{background:var(--panel2)}.method{color:var(--accent);font:800 12px ui-monospace,monospace}.path{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font:13px ui-monospace,monospace}.time{display:block;color:var(--muted);font-size:12px;margin-top:5px}.detail{overflow:auto;padding:24px}.empty{height:100%;display:grid;place-items:center;text-align:center;color:var(--muted)}.empty strong{display:block;color:var(--text);margin-bottom:7px}.title{display:flex;gap:12px;align-items:baseline;flex-wrap:wrap;margin-bottom:20px}.title h1{margin:0;font:700 20px ui-monospace,monospace}.title time{color:var(--muted);font-size:13px}.section{margin-bottom:22px}.section h2{font-size:13px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}pre,.kv{border:1px solid var(--border);background:var(--panel);border-radius:10px;overflow:auto}pre{padding:14px;white-space:pre-wrap;word-break:break-word;font:12.5px/1.6 ui-monospace,monospace}.kvrow{display:grid;grid-template-columns:minmax(150px,230px) 1fr;border-bottom:1px solid var(--border);font:12.5px/1.5 ui-monospace,monospace}.kvrow:last-child{border-bottom:0}.k,.v{padding:10px 12px;overflow-wrap:anywhere}.k{color:var(--muted);border-right:1px solid var(--border)}@media(max-width:780px){header{flex-wrap:wrap}.urlbar{order:3;flex-basis:100%}main{grid-template-columns:1fr}.detail{display:none;position:fixed;inset:0;background:var(--bg);z-index:10}.detail.open{display:block}}
-</style>
+    <meta charset="utf-8">
+    <meta content="width=device-width,initial-scale=1" name="viewport">
+    <title>Webhook Viewer</title>
+    <style>
+        :root {
+            color-scheme: dark;
+            --bg: #0b0d10;
+            --panel: #11151a;
+            --panel2: #171c22;
+            --border: #252c35;
+            --text: #edf2f7;
+            --muted: #8e99a8;
+            --accent: #7dd3fc;
+            --danger: #fb7185;
+            --good: #4ade80
+        }
+
+        * {
+            box-sizing: border-box
+        }
+
+        body {
+            margin: 0;
+            height: 100vh;
+            background: var(--bg);
+            color: var(--text);
+            font-family: Inter, system-ui, sans-serif
+        }
+
+        button {
+            border: 1px solid var(--border);
+            background: var(--panel2);
+            color: var(--text);
+            border-radius: 9px;
+            padding: 9px 12px;
+            cursor: pointer
+        }
+
+        .app {
+            height: 100vh;
+            display: grid;
+            grid-template-rows:auto 1fr
+        }
+
+        header {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border)
+        }
+
+        .brand {
+            font-weight: 700;
+            display: flex;
+            gap: 10px;
+            align-items: center
+        }
+
+        .dot {
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--good)
+        }
+
+        .urlbar {
+            flex: 1;
+            display: flex;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            overflow: hidden;
+            background: var(--panel)
+        }
+
+        .urlbar code {
+            flex: 1;
+            padding: 10px 12px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap
+        }
+
+        .urlbar button {
+            border: 0;
+            border-left: 1px solid var(--border);
+            border-radius: 0
+        }
+
+        .actions {
+            display: flex;
+            gap: 8px
+        }
+
+        .danger {
+            color: #fecdd3
+        }
+
+        main {
+            display: grid;
+            grid-template-columns:330px 1fr;
+            min-height: 0
+        }
+
+        aside {
+            background: var(--panel);
+            border-right: 1px solid var(--border);
+            display: grid;
+            grid-template-rows:auto 1fr;
+            min-width: 0
+        }
+
+        .heading {
+            padding: 14px 16px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between
+        }
+
+        .heading span {
+            color: var(--muted);
+            font-size: 13px
+        }
+
+        #list {
+            overflow: auto
+        }
+
+        .row {
+            width: 100%;
+            display: grid;
+            grid-template-columns:70px 1fr;
+            gap: 10px;
+            text-align: left;
+            padding: 13px 14px;
+            border: 0;
+            border-bottom: 1px solid var(--border);
+            border-radius: 0;
+            background: transparent
+        }
+
+        .row:hover, .row.active {
+            background: var(--panel2)
+        }
+
+        .method {
+            color: var(--accent);
+            font: 800 12px ui-monospace, monospace
+        }
+
+        .path {
+            display: block;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            font: 13px ui-monospace, monospace
+        }
+
+        .time {
+            display: block;
+            color: var(--muted);
+            font-size: 12px;
+            margin-top: 5px
+        }
+
+        .detail {
+            overflow: auto;
+            padding: 24px
+        }
+
+        .empty {
+            height: 100%;
+            display: grid;
+            place-items: center;
+            text-align: center;
+            color: var(--muted)
+        }
+
+        .empty strong {
+            display: block;
+            color: var(--text);
+            margin-bottom: 7px
+        }
+
+        .title {
+            display: flex;
+            gap: 12px;
+            align-items: baseline;
+            flex-wrap: wrap;
+            margin-bottom: 20px
+        }
+
+        .title h1 {
+            margin: 0;
+            font: 700 20px ui-monospace, monospace
+        }
+
+        .title time {
+            color: var(--muted);
+            font-size: 13px
+        }
+
+        .section {
+            margin-bottom: 22px
+        }
+
+        .section h2 {
+            font-size: 13px;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: .06em
+        }
+
+        pre, .kv {
+            border: 1px solid var(--border);
+            background: var(--panel);
+            border-radius: 10px;
+            overflow: auto
+        }
+
+        pre {
+            padding: 14px;
+            white-space: pre-wrap;
+            word-break: break-word;
+            font: 12.5px/1.6 ui-monospace, monospace
+        }
+
+        .kvrow {
+            display: grid;
+            grid-template-columns:minmax(150px, 230px) 1fr;
+            border-bottom: 1px solid var(--border);
+            font: 12.5px/1.5 ui-monospace, monospace
+        }
+
+        .kvrow:last-child {
+            border-bottom: 0
+        }
+
+        .k, .v {
+            padding: 10px 12px;
+            overflow-wrap: anywhere
+        }
+
+        .k {
+            color: var(--muted);
+            border-right: 1px solid var(--border)
+        }
+
+        @media (max-width: 780px) {
+            header {
+                flex-wrap: wrap
+            }
+
+            .urlbar {
+                order: 3;
+                flex-basis: 100%
+            }
+
+            main {
+                grid-template-columns:1fr
+            }
+
+            .detail {
+                display: none;
+                position: fixed;
+                inset: 0;
+                background: var(--bg);
+                z-index: 10
+            }
+
+            .detail.open {
+                display: block
+            }
+        }
+    </style>
 </head>
 <body>
 <div class="app">
-<header><div class="brand"><span class="dot"></span>Webhook Viewer</div><div class="urlbar"><code id="hook"></code><button id="copy">Copy</button></div><div class="actions"><button id="refresh">Refresh</button><button class="danger" id="clear">Clear All</button></div></header>
-<main><aside><div class="heading"><strong>Requests</strong><span id="count">0</span></div><div id="list"></div></aside><section class="detail" id="detail"></section></main>
+    <header>
+        <div class="brand"><span class="dot"></span>Webhook Viewer</div>
+        <div class="urlbar"><code id="hook"></code>
+            <button id="copy">Copy</button>
+        </div>
+        <div class="actions">
+            <button id="refresh">Refresh</button>
+            <button class="danger" id="clear">Clear All</button>
+        </div>
+    </header>
+    <main>
+        <aside>
+            <div class="heading"><strong>Requests</strong><span id="count">0</span></div>
+            <div id="list"></div>
+        </aside>
+        <section class="detail" id="detail"></section>
+    </main>
 </div>
 <script>
-const state={items:[],selected:null},list=document.querySelector('#list'),detail=document.querySelector('#detail'),count=document.querySelector('#count'),hook=`${location.origin}/webhook`;document.querySelector('#hook').textContent=hook
-const esc=v=>String(v??'').replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;').replaceAll("'",'&#039;')
-const when=x=>new Intl.DateTimeFormat(undefined,{dateStyle:'medium',timeStyle:'medium'}).format(new Date(x))
-function body(x){if(!x.body)return '(empty body)';try{return JSON.stringify(JSON.parse(x.body),null,2)}catch{return x.body}}
-function kv(o){const e=Object.entries(o||{});return e.length?e.map(([k,v])=>`<div class="kvrow"><div class="k">${esc(k)}</div><div class="v">${esc(Array.isArray(v)?v.join(', '):v)}</div></div>`).join(''):'<div class="kvrow"><div class="v">None</div></div>'}
-function renderList(){count.textContent=state.items.length;if(!state.items.length){list.innerHTML='<div style="padding:20px;color:var(--muted)">No requests yet.</div>';return}list.innerHTML=state.items.map(x=>{const u=new URL(x.url);return `<button class="row ${x.id===state.selected?'active':''}" data-id="${esc(x.id)}"><span class="method">${esc(x.method)}</span><span><span class="path">${esc(u.pathname+u.search)}</span><span class="time">${esc(when(x.receivedAt))}</span></span></button>`}).join('');document.querySelectorAll('.row').forEach(b=>b.onclick=()=>{state.selected=b.dataset.id;renderList();renderDetail();detail.classList.add('open')})}
-function renderDetail(){const x=state.items.find(i=>i.id===state.selected);if(!x){detail.innerHTML='<div class="empty"><div><strong>Waiting for webhook requests</strong>Send any HTTP method to the webhook URL above.</div></div>';return}const u=new URL(x.url);detail.innerHTML=`<button onclick="document.querySelector('#detail').classList.remove('open')">← Requests</button><div class="title"><span class="method">${esc(x.method)}</span><h1>${esc(u.pathname+u.search)}</h1><time>${esc(when(x.receivedAt))}</time></div><div class="section"><h2>Body</h2><pre>${esc(body(x))}</pre></div><div class="section"><h2>Query parameters</h2><div class="kv">${kv(x.query)}</div></div><div class="section"><h2>Headers</h2><div class="kv">${kv(x.headers)}</div></div><div class="section"><h2>Request URL</h2><pre>${esc(x.url)}</pre></div>`}
-async function load(){const r=await fetch('/api/webhooks',{cache:'no-store'});if(!r.ok)return;state.items=(await r.json()).items||[];if(state.selected&&!state.items.some(x=>x.id===state.selected))state.selected=null;renderList();renderDetail()}
-document.querySelector('#copy').onclick=()=>navigator.clipboard.writeText(hook);document.querySelector('#refresh').onclick=load;document.querySelector('#clear').onclick=async()=>{if(!confirm('Delete every captured webhook?'))return;await fetch('/api/clear',{method:'DELETE'});state.selected=null;await load()};load();setInterval(load,2000)
+    const state = {items: [], selected: null}, list = document.querySelector('#list'),
+        detail = document.querySelector('#detail'), count = document.querySelector('#count'),
+        hook = `${location.origin}/webhook`;
+    document.querySelector('#hook').textContent = hook
+    const esc = v => String(v ?? '').replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;').replaceAll("'", '&#039;')
+    const when = x => new Intl.DateTimeFormat(undefined, {dateStyle: 'medium', timeStyle: 'medium'}).format(new Date(x))
+
+    function body(x) {
+        if (!x.body) return '(empty body)';
+        try {
+            return JSON.stringify(JSON.parse(x.body), null, 2)
+        } catch {
+            return x.body
+        }
+    }
+
+    function kv(o) {
+        const e = Object.entries(o || {});
+        return e.length ? e.map(([k, v]) => `<div class="kvrow"><div class="k">${esc(k)}</div><div class="v">${esc(Array.isArray(v) ? v.join(', ') : v)}</div></div>`).join('') : '<div class="kvrow"><div class="v">None</div></div>'
+    }
+
+    function renderList() {
+        count.textContent = state.items.length;
+        if (!state.items.length) {
+            list.innerHTML = '<div style="padding:20px;color:var(--muted)">No requests yet.</div>';
+            return
+        }
+        list.innerHTML = state.items.map(x => {
+            const u = new URL(x.url);
+            return `<button class="row ${x.id === state.selected ? 'active' : ''}" data-id="${esc(x.id)}"><span class="method">${esc(x.method)}</span><span><span class="path">${esc(u.pathname + u.search)}</span><span class="time">${esc(when(x.receivedAt))}</span></span></button>`
+        }).join('');
+        document.querySelectorAll('.row').forEach(b => b.onclick = () => {
+            state.selected = b.dataset.id;
+            renderList();
+            renderDetail();
+            detail.classList.add('open')
+        })
+    }
+
+    function renderDetail() {
+        const x = state.items.find(i => i.id === state.selected);
+        if (!x) {
+            detail.innerHTML = '<div class="empty"><div><strong>Waiting for webhook requests</strong>Send any HTTP method to the webhook URL above.</div></div>';
+            return
+        }
+        const u = new URL(x.url);
+        detail.innerHTML = `<button onclick="document.querySelector('#detail').classList.remove('open')">← Requests</button><div class="title"><span class="method">${esc(x.method)}</span><h1>${esc(u.pathname + u.search)}</h1><time>${esc(when(x.receivedAt))}</time></div><div class="section"><h2>Body</h2><pre>${esc(body(x))}</pre></div><div class="section"><h2>Query parameters</h2><div class="kv">${kv(x.query)}</div></div><div class="section"><h2>Headers</h2><div class="kv">${kv(x.headers)}</div></div><div class="section"><h2>Request URL</h2><pre>${esc(x.url)}</pre></div>`
+    }
+
+    async function load() {
+        const r = await fetch('/api/webhooks', {cache: 'no-store'});
+        if (!r.ok) return;
+        state.items = (await r.json()).items || [];
+        if (state.selected && !state.items.some(x => x.id === state.selected)) state.selected = null;
+        renderList();
+        renderDetail()
+    }
+
+    document.querySelector('#copy').onclick = () => navigator.clipboard.writeText(hook);
+    document.querySelector('#refresh').onclick = load;
+    document.querySelector('#clear').onclick = async () => {
+        if (!confirm('Delete every captured webhook?')) return;
+        await fetch('/api/clear', {method: 'DELETE'});
+        state.selected = null;
+        await load()
+    };
+    load();
+    setInterval(load, 2000)
 </script>
 </body>
 </html>

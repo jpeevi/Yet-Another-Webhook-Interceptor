@@ -1,12 +1,38 @@
-CREATE TABLE IF NOT EXISTS webhooks (
-  id TEXT PRIMARY KEY,
-  received_at TEXT NOT NULL,
-  method TEXT NOT NULL,
-  url TEXT NOT NULL,
-  path TEXT NOT NULL,
-  query TEXT NOT NULL,
-  headers TEXT NOT NULL,
-  body TEXT NOT NULL,
-  content_type TEXT
+CREATE TABLE IF NOT EXISTS webhooks
+(
+    id
+    TEXT
+    PRIMARY
+    KEY,
+    received_at
+    TEXT
+    NOT
+    NULL,
+    method
+    TEXT
+    NOT
+    NULL,
+    url
+    TEXT
+    NOT
+    NULL,
+    path
+    TEXT
+    NOT
+    NULL,
+    query
+    TEXT
+    NOT
+    NULL,
+    headers
+    TEXT
+    NOT
+    NULL,
+    body
+    TEXT
+    NOT
+    NULL,
+    content_type
+    TEXT
 );
 CREATE INDEX IF NOT EXISTS idx_webhooks_received_at ON webhooks(received_at DESC);
