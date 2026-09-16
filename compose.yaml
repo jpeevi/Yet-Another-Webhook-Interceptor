@@ -1,0 +1,16 @@
+services:
+  webhook-viewer:
+    build: .
+    ports:
+      - "8787:8787"
+    environment:
+      PORT: "8787"
+      DATABASE_PATH: "/data/webhooks.db"
+      BASIC_AUTH_USER: "${BASIC_AUTH_USER}"
+      BASIC_AUTH_PASSWORD: "${BASIC_AUTH_PASSWORD}"
+    volumes:
+      - webhook_data:/data
+    restart: unless-stopped
+
+volumes:
+  webhook_data:
