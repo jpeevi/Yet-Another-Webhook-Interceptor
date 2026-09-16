@@ -66,6 +66,13 @@ function isAuthorized(
 export function createApp(store: WebhookStore, options: AppOptions = {}) {
   const app = new Hono()
 
+  app.get('/healthz', (c) => {
+  return c.json({
+    ok: true,
+    service: 'Yet Another Webhook Interceptor'
+  })
+})
+
   app.all('/webhook', async (c) => {
     const request = c.req.raw
     const url = new URL(request.url)
